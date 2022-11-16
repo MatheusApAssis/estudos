@@ -17,7 +17,7 @@ export const App = () => {
     const db = getFirestore(firebaseApp);
     const userCollectionRef = collection(db, "user");
 
-    async function criarUser(){
+    async function criarUser() {
       const user = await addDoc(userCollectionRef, {
         name, 
         email,
@@ -28,10 +28,10 @@ export const App = () => {
     useEffect(() => {
       const getUser = async () => {
         const data = await getDocs(userCollectionRef);
-        console.log(data.docs.map(doc => ((doc) => ({...doc.data(), id:doc.id}))));
+        setUser(data.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
       };
       getUser();
-    },[]);
+    });
 
     async function deleteUser(id){
       const userDoc = doc(db, "user", id);
@@ -60,9 +60,10 @@ export const App = () => {
               <div key={user.id}>
                 <li>{user.name}</li>
                 <li>{user.email}</li>
+                <button onClick={() => deleteUser(user.id)}>Deletar</button>
               </div>
 
-            )
+            );
           })}
         </ul>
       </div>
